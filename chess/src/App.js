@@ -61,19 +61,51 @@ TODO:
 
 */
 
-  convert_to_image(wp){
-    if 
+  convert_to_image(piece){
+    let x = piece
+    if(x === 'bp'){
+      let image = this.pieces.black_pawn;
+      return image
+    }else if(x === 'bR'){
+      let image = this.pieces.black_rook
+      return image
+    }else if(x === 'bN'){
+      let image = this.pieces.black_knight
+      return image
+    }else if(x === 'bB'){
+      let image = this.pieces.black_bishop
+      return image
+    }else if(x === 'bQ'){
+      let image = this.pieces.black_queen
+      return image
+    }else if(x === 'bK'){
+      let image = this.pieces.black_king
+      return image
+    }else if(x === '--'){
+      return ''
+    }
+    
+  }
+
+  convert_notation_to_array(notation){
+
   }
 
   confirm_move(notation){
+    // pass in 2d array of length 2 [[0,0],[0,0]]
+    this.local_board = this.state.board
     if(this.move.length === 2){
-
+      let local_arr = this.convert_notation_to_array(notation)
+      
     }
   }
 
   moves(x){
 // currently changing this function so it takes in [x][x] instead of algebraic notation
-    if(this.move.length === 2){
+    if(x === this.move[0]){
+      this.move = []
+    }
+    else if(this.move.length === 2){
       this.move = [];
     }
     else if(this.move.length === 1){
@@ -91,30 +123,30 @@ TODO:
       <div>
         <div className="chessboard">
           
-          <div onClick={() => this.moves('a8')} className="white">{this.state.board[0][0]}</div>
-          <div onClick={() => this.moves('b8')} className="black">{this.state.board[0][1]}</div>
-          <div onClick={() => this.moves('c8')} className="white">{this.state.board[0][2]}</div>
-          <div onClick={() => this.moves('d8')} className="black">{this.state.board[0][3]}</div>
-          <div onClick={() => this.moves('e8')} className="white">{this.state.board[0][4]}</div>
-          <div onClick={() => this.moves('f8')} className="black">{this.state.board[0][5]}</div>
-          <div onClick={() => this.moves('g8')} className="white">{this.state.board[0][6]}</div>
-          <div onClick={() => this.moves('h8')} className="black">{this.state.board[0][7]}</div>
-          <div onClick={() => this.moves(this.state.board[1][0])} className="black">{this.state.board[1][0]}</div>
-          <div onClick={() => this.moves('b7')} className="white">{this.state.board[1][1]}</div>
-          <div onClick={() => this.moves('c7')} className="black">{this.state.board[1][2]}</div>
-          <div onClick={() => this.moves('d7')} className="white">{this.state.board[1][3]}</div>
-          <div onClick={() => this.moves('e7')} className="black">{this.state.board[1][4]}</div>
-          <div onClick={() => this.moves('f7')} className="white">{this.state.board[1][5]}</div>
-          <div onClick={() => this.moves('g7')} className="black">{this.state.board[1][6]}</div>
-          <div onClick={() => this.moves('h7')} className="white">{this.state.board[1][7]}</div>
-          <div onClick={() => this.moves('a6')} className="white">{this.state.board[2][0]}</div>
-          <div onClick={() => this.moves('b6')} className="black">{this.state.board[2][1]}</div>
-          <div onClick={() => this.moves('c6')} className="white">{this.state.board[2][2]}</div>
-          <div onClick={() => this.moves('d6')} className="black">{this.state.board[2][3]}</div>
-          <div onClick={() => this.moves('e6')} className="white">{this.state.board[2][4]}</div>
-          <div onClick={() => this.moves('f6')} className="black">{this.state.board[2][5]}</div>
-          <div onClick={() => this.moves('g6')} className="white">{this.state.board[2][6]}</div>
-          <div onClick={() => this.moves('h6')} className="black">{this.state.board[2][7]}</div>
+          <div onClick={() => this.moves('a8')} className="white">{this.convert_to_image(this.state.board[0][0])}</div>
+          <div onClick={() => this.moves('b8')} className="black">{this.convert_to_image(this.state.board[0][1])}</div>
+          <div onClick={() => this.moves('c8')} className="white">{this.convert_to_image(this.state.board[0][2])}</div>
+          <div onClick={() => this.moves('d8')} className="black">{this.convert_to_image(this.state.board[0][3])}</div>
+          <div onClick={() => this.moves('e8')} className="white">{this.convert_to_image(this.state.board[0][4])}</div>
+          <div onClick={() => this.moves('f8')} className="black">{this.convert_to_image(this.state.board[0][5])}</div>
+          <div onClick={() => this.moves('g8')} className="white">{this.convert_to_image(this.state.board[0][6])}</div>
+          <div onClick={() => this.moves('h8')} className="black">{this.convert_to_image(this.state.board[0][7])}</div>
+          <div onClick={() => this.moves('a7')} className="black">{this.convert_to_image(this.state.board[1][1])}</div>
+          <div onClick={() => this.moves('b7')} className="white">{this.convert_to_image(this.state.board[1][1])}</div>
+          <div onClick={() => this.moves('c7')} className="black">{this.convert_to_image(this.state.board[1][2])}</div>
+          <div onClick={() => this.moves('d7')} className="white">{this.convert_to_image(this.state.board[1][3])}</div>
+          <div onClick={() => this.moves('e7')} className="black">{this.convert_to_image(this.state.board[1][4])}</div>
+          <div onClick={() => this.moves('f7')} className="white">{this.convert_to_image(this.state.board[1][5])}</div>
+          <div onClick={() => this.moves('g7')} className="black">{this.convert_to_image(this.state.board[1][6])}</div>
+          <div onClick={() => this.moves('h7')} className="white">{this.convert_to_image(this.state.board[1][7])}</div>
+          <div onClick={() => this.moves('a6')} className="white">{this.convert_to_image(this.state.board[2][0])}</div>
+          <div onClick={() => this.moves('b6')} className="black">{this.convert_to_image(this.state.board[2][1])}</div>
+          <div onClick={() => this.moves('c6')} className="white">{this.convert_to_image(this.state.board[2][2])}</div>
+          <div onClick={() => this.moves('d6')} className="black">{this.convert_to_image(this.state.board[2][3])}</div>
+          <div onClick={() => this.moves('e6')} className="white">{this.convert_to_image(this.state.board[2][4])}</div>
+          <div onClick={() => this.moves('f6')} className="black">{this.convert_to_image(this.state.board[2][5])}</div>
+          <div onClick={() => this.moves('g6')} className="white">{this.convert_to_image(this.state.board[2][6])}</div>
+          <div onClick={() => this.moves('h6')} className="black">{this.convert_to_image(this.state.board[2][7])}</div>
           <div className="black"></div>
           <div className="white"></div>
           <div className="black"></div>
@@ -157,6 +189,7 @@ TODO:
           <div className="white">&#9814;</div>
         </div>
       <h1>{this.state.current_click}</h1>
+      <h1>{this.convert_to_image(this.state.board[1][1])}</h1>
       </div>
     )
   }
