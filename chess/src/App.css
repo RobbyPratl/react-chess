@@ -65,4 +65,10 @@
   border: 25px solid #333;
 }
 
-div{}
+
+.restart_button{
+  float:center;
+  width: 50px;
+  height:25px;
+  background-color:antiquewhite
+}
