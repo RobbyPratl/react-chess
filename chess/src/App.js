@@ -18,6 +18,7 @@ class App extends React.Component {
       ["wp","wp","wp","wp","wp","wp","wp","wp"],
       ["wR","wN","wB","wQ","wK","wB","wN","wR"]
     ],
+    status: null
   }
   
   }
@@ -89,12 +90,56 @@ TODO:
 
   confirm_move(move){
     // pass in 2d array of length 2 [[0,0],[0,0]]
+    let move_status = null
+
     let local_board = this.state.board
+
     let piece_to_move = this.convert_notation_to_array(move[0])
     let piece_moved_to = this.convert_notation_to_array(move[1])
-    local_board[piece_moved_to[0]][piece_moved_to[1]] = local_board[piece_to_move[0]][piece_to_move[1]]
-    local_board[piece_to_move[0]][piece_to_move[1]] = '--'
-    this.setState({board:local_board})
+
+    let piece_to_move_coord = this.convert_notation_to_array(move[0])
+    let piece_moved_to_coord = this.convert_notation_to_array(move[1])
+
+    let piece_moved = local_board[piece_to_move_coord[0]][piece_to_move_coord[1]].toString()
+    let piece_moved_onto = local_board[piece_moved_to_coord[0]][piece_moved_to_coord[1]].toString()
+    /* 
+    Possible white knight moves are (x-2,y-1),(x-2,y+1),(x+2,y-1)(x+2,y+1)
+    */
+    console.log(piece_moved)
+    console.log([piece_to_move_coord[1]-1],[piece_moved_to_coord[1]])
+    if(piece_moved[0] === piece_moved_onto[0] ){
+      console.log('invalid move: friendly take')
+      move_status = 'invalid move: friendly take'
+    }
+    else if(piece_moved == 'wp' && piece_to_move_coord[0]-1 !== piece_moved_to_coord[0] && piece_to_move_coord[1] === piece_moved_to_coord[1] ){
+      console.log('invalid pawn move')
+      move_status = 'invalid pawn move'
+    }
+    // knights ---------------
+    else if(
+      piece_moved[1] === 'N' 
+      && (`${piece_to_move_coord[0]-2},${piece_to_move_coord[1]-1}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      && (`${piece_to_move_coord[0]-2},${piece_to_move_coord[1]+1}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      && (`${piece_to_move_coord[0]+2},${piece_to_move_coord[1]-1}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      && (`${piece_to_move_coord[0]-1},${piece_to_move_coord[1]+2}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      && (`${piece_to_move_coord[0]-1},${piece_to_move_coord[1]-2}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      && (`${piece_to_move_coord[0]+1},${piece_to_move_coord[1]+2}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      && (`${piece_to_move_coord[0]+1},${piece_to_move_coord[1]-2}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      ){
+        move_status = 'invalid knight move'
+      console.log('invalid knight move')
+    }
+
+    
+    // -----------------------
+    else{
+      local_board[piece_moved_to[0]][piece_moved_to[1]] = local_board[piece_to_move[0]][piece_to_move[1]]
+      local_board[piece_to_move[0]][piece_to_move[1]] = '--'
+      console.dir(local_board)
+
+    }
+    this.setState({board:local_board,status:move_status})
+
   }
   
   restart(){
@@ -110,20 +155,26 @@ TODO:
   }
 
   moves(x){
-// currently changing this function so it takes in [x][x] instead of algebraic notation
-    if(x === this.move[0]){
-      this.move = [];
-    }
-    else if(this.move.length === 1){
-      this.move[1] = x;
-      this.confirm_move(this.move)
-      this.move = []
-    }
-    else{
-      this.move[0] = x;
-    }
-    this.setState({current_click:this.move})
-  }
+    // currently changing this function so it takes in [x][x] instead of algebraic notation
+        let local_white_to_move = this.state.white_to_move
+
+        if(x === this.move[0]){
+          this.move = [];
+        }
+        else if(this.move[0] === '--' ||(this.move[1] === '--' && this.move[0] === '--' )){
+          this.move = []
+        }
+        else if(this.move.length === 1){
+          this.move[1] = x;
+          this.confirm_move(this.move)
+          this.move = []
+          local_white_to_move = !local_white_to_move
+        }
+        else{
+          this.move[0] = x;
+        }
+        this.setState({current_click:this.move,white_to_move:local_white_to_move})
+      }
 
   render (){
     return (
@@ -139,7 +190,7 @@ TODO:
           <div onClick={() => this.moves('f8')} className="black">{this.convert_to_image(this.state.board[0][5])}</div>
           <div onClick={() => this.moves('g8')} className="white">{this.convert_to_image(this.state.board[0][6])}</div>
           <div onClick={() => this.moves('h8')} className="black">{this.convert_to_image(this.state.board[0][7])}</div>
-          <div onClick={() => this.moves('a7')} className="black">{this.convert_to_image(this.state.board[1][1])}</div>
+          <div onClick={() => this.moves('a7')} className="black">{this.convert_to_image(this.state.board[1][0])}</div>
           <div onClick={() => this.moves('b7')} className="white">{this.convert_to_image(this.state.board[1][1])}</div>
           <div onClick={() => this.moves('c7')} className="black">{this.convert_to_image(this.state.board[1][2])}</div>
           <div onClick={() => this.moves('d7')} className="white">{this.convert_to_image(this.state.board[1][3])}</div>
@@ -198,7 +249,8 @@ TODO:
         </div>
         <div className='restart_button' onClick={()=>this.restart()}>restart</div>
       <h1>{this.state.current_click}</h1>
-      <h1>{this.convert_to_image(this.state.board[1][1])}</h1>
+      <h1>♟</h1>
+      <h1>{this.state.status}</h1>
       </center>
       </div>
     )
