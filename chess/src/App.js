@@ -248,7 +248,6 @@ TODO:
           <div onClick={() => this.moves('h1')} className="white">{this.convert_to_image(this.state.board[7][7])}</div>
         </div>
         <div className='restart_button' onClick={()=>this.restart()}>restart</div>
-      <h1>{this.state.current_click}</h1>
       <h1>♟</h1>
       <h1>{this.state.status}</h1>
       </center>
