@@ -56,7 +56,7 @@ TODO:
   * add taking pieces while storing taken pieces in another variable
     (will be used later to calculate point values)
 
-  * add move legality
+  * add move legality // for knight!!! pawn in progress (- en passent)
 
   * add en passent 
 
@@ -110,6 +110,9 @@ TODO:
     if(piece_moved[0] === piece_moved_onto[0] ){
       console.log('invalid move: friendly take')
       move_status = 'invalid move: friendly take'
+    }
+    else if(piece_moved == '--'){
+      move_status = 'must move a piece'
     }
     else if(piece_moved == 'wp' && piece_to_move_coord[0]-1 !== piece_moved_to_coord[0] && piece_to_move_coord[1] === piece_moved_to_coord[1] ){
       console.log('invalid pawn move')
