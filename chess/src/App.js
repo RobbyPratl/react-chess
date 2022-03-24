@@ -18,6 +18,7 @@ class App extends React.Component {
       ["wp","wp","wp","wp","wp","wp","wp","wp"],
       ["wR","wN","wB","wQ","wK","wB","wN","wR"]
     ],
+    white_to_move:true,
     status: null
   }
   
@@ -92,6 +93,8 @@ TODO:
     // pass in 2d array of length 2 [[0,0],[0,0]]
     let move_status = null
 
+    let local_white_to_move = this.state.white_to_move
+
     let local_board = this.state.board
 
     let piece_to_move = this.convert_notation_to_array(move[0])
@@ -105,25 +108,36 @@ TODO:
     /* 
     Possible white knight moves are (x-2,y-1),(x-2,y+1),(x+2,y-1)(x+2,y+1)
     */
+
+    var true_to_move = {
+      'w': true,
+      'b':false
+    }
+
     console.log(piece_moved)
-    console.log([piece_to_move_coord[1]-1],[piece_moved_to_coord[1]])
-    if(piece_moved[0] === piece_moved_onto[0] ){
+    if(true_to_move[piece_moved[0]] != local_white_to_move){
+      console.log('not true')
+    }
+    else if( (piece_moved[0] == piece_moved_onto[0] ) ){
       console.log('invalid move: friendly take')
       move_status = 'invalid move: friendly take'
     }
     else if(piece_moved == '--'){
       move_status = 'must move a piece'
     }
-    else if(piece_moved == 'wp' && piece_to_move_coord[0]-1 !== piece_moved_to_coord[0] && piece_to_move_coord[1] === piece_moved_to_coord[1] ){
+    // NEED REFACTOR
+    else if((piece_moved == 'wp' && piece_to_move_coord[0]-1 === piece_moved_to_coord) || piece_moved[0] === 'bp'  && piece_moved_to_coord[1] != piece_to_move_coord[1]+1){
       console.log('invalid pawn move')
       move_status = 'invalid pawn move'
     }
     // knights ---------------
+    //NEED REFACTOR
     else if(
       piece_moved[1] === 'N' 
       && (`${piece_to_move_coord[0]-2},${piece_to_move_coord[1]-1}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
       && (`${piece_to_move_coord[0]-2},${piece_to_move_coord[1]+1}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
       && (`${piece_to_move_coord[0]+2},${piece_to_move_coord[1]-1}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
+      && (`${piece_to_move_coord[0]+2},${piece_to_move_coord[1]+1}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
       && (`${piece_to_move_coord[0]-1},${piece_to_move_coord[1]+2}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
       && (`${piece_to_move_coord[0]-1},${piece_to_move_coord[1]-2}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
       && (`${piece_to_move_coord[0]+1},${piece_to_move_coord[1]+2}` !== `${piece_moved_to_coord[0]},${piece_moved_to_coord[1]}`)
@@ -139,9 +153,10 @@ TODO:
       local_board[piece_moved_to[0]][piece_moved_to[1]] = local_board[piece_to_move[0]][piece_to_move[1]]
       local_board[piece_to_move[0]][piece_to_move[1]] = '--'
       console.dir(local_board)
+      local_white_to_move = !local_white_to_move;
 
     }
-    this.setState({board:local_board,status:move_status})
+    this.setState({board:local_board,status:move_status,white_to_move:local_white_to_move})
 
   }
   
@@ -159,7 +174,6 @@ TODO:
 
   moves(x){
     // currently changing this function so it takes in [x][x] instead of algebraic notation
-        let local_white_to_move = this.state.white_to_move
 
         if(x === this.move[0]){
           this.move = [];
@@ -167,16 +181,18 @@ TODO:
         else if(this.move[0] === '--' ||(this.move[1] === '--' && this.move[0] === '--' )){
           this.move = []
         }
+        else if(this.move.length === 2){
+          console.log('move list cleared')
+        }
         else if(this.move.length === 1){
           this.move[1] = x;
           this.confirm_move(this.move)
           this.move = []
-          local_white_to_move = !local_white_to_move
         }
         else{
           this.move[0] = x;
         }
-        this.setState({current_click:this.move,white_to_move:local_white_to_move})
+        this.setState({current_click:this.move})
       }
 
   render (){
