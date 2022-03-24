@@ -117,6 +117,7 @@ TODO:
     console.log(piece_moved)
     if(true_to_move[piece_moved[0]] != local_white_to_move){
       console.log('not true')
+      move_status = 'not your turn'
     }
     else if( (piece_moved[0] == piece_moved_onto[0] ) ){
       console.log('invalid move: friendly take')
@@ -126,7 +127,7 @@ TODO:
       move_status = 'must move a piece'
     }
     // NEED REFACTOR
-    else if((piece_moved == 'wp' && piece_to_move_coord[0]-1 === piece_moved_to_coord) || piece_moved[0] === 'bp'  && piece_moved_to_coord[1] != piece_to_move_coord[1]+1){
+    else if((piece_moved == 'wp' && piece_to_move_coord[0]-1 === piece_moved_to_coord) || (piece_moved[0] === 'bp'  && piece_moved_to_coord[1] != piece_to_move_coord[1]+1)){
       console.log('invalid pawn move')
       move_status = 'invalid pawn move'
     }
