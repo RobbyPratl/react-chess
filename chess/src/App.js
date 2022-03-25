@@ -127,7 +127,7 @@ TODO:
       move_status = 'must move a piece'
     }
     // NEED REFACTOR
-    else if((piece_moved == 'wp' && piece_to_move_coord[0]-1 === piece_moved_to_coord) || (piece_moved[0] === 'bp'  && piece_moved_to_coord[1] != piece_to_move_coord[1]+1)){
+    else if(piece_moved == 'wp' && (piece_moved_to_coord[1] != piece_moved[1]) && ((piece_to_move_coord[0] != 6 && piece_to_move_coord[0]-piece_moved_to_coord[0] == 2 ) && (piece_to_move_coord[0]-1 != piece_moved_to_coord[0]))){
       console.log('invalid pawn move')
       move_status = 'invalid pawn move'
     }
@@ -147,9 +147,11 @@ TODO:
         move_status = 'invalid knight move'
       console.log('invalid knight move')
     }
-
     
     // -----------------------
+    else if(piece_moved[1] == 'R' && piece_moved_to_coord[0] != piece_to_move_coord[0] && piece_moved_to_coord[1] != piece_to_move_coord[0] ){
+      move_status = 'invalid rook move'
+    }
     else{
       local_board[piece_moved_to[0]][piece_moved_to[1]] = local_board[piece_to_move[0]][piece_to_move[1]]
       local_board[piece_to_move[0]][piece_to_move[1]] = '--'
