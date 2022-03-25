@@ -126,10 +126,13 @@ TODO:
     else if(piece_moved == '--'){
       move_status = 'must move a piece'
     }
-    // NEED REFACTOR
-    else if(piece_moved == 'wp' && (piece_moved_to_coord[1] != piece_moved[1]) && ((piece_to_move_coord[0] != 6 && piece_to_move_coord[0]-piece_moved_to_coord[0] == 2 ) && (piece_to_move_coord[0]-1 != piece_moved_to_coord[0]))){
+    // bug to fix... piece in 6 can move anywhere in column
+    else if(piece_moved == 'wp' && piece_moved_onto == '--'&& (piece_moved_to_coord[1] != piece_moved[1]) && ((piece_to_move_coord[0] != 6 && piece_to_move_coord[0]-piece_moved_to_coord[0] == 2 ) && (piece_to_move_coord[0]-1 != piece_moved_to_coord[0]))){
       console.log('invalid pawn move')
       move_status = 'invalid pawn move'
+    }
+    else if(piece_moved[1] == 'B' && (piece_to_move_coord[0] - piece_moved_to_coord[0])/(piece_to_move_coord[1]-piece_moved_to_coord[1]) != 1&&(piece_to_move_coord[0] - piece_moved_to_coord[0])/(piece_to_move_coord[1]-piece_moved_to_coord[1]) != -1){
+      console.log('can only take diagnols')
     }
     // knights ---------------
     //NEED REFACTOR
